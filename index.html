@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafio Técnico · Clicou, Fechou! · Grão Direto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:       #67a22d;
+    --green-btn:   #8cc63f;
+    --green-hover: #5d9127;
+    --green-light: #f0f7e6;
+    --green-pale:  #f8fbf3;
+    --navy:        #1a2e4a;
+    --text:        #1a1a1a;
+    --text-mid:    #3d3d3d;
+    --text-gray:   #5a5a5a;
+    --text-light:  #888;
+    --bg:          #f5f5f5;
+    --white:       #ffffff;
+    --border:      #e0e0e0;
+    --border-green:#c8dfa8;
+    --gold:        #d4920a;
+    --font:        'Montserrat', sans-serif;
+    --radius:      8px;
+    --radius-lg:   12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; }
+  .nav-logo svg { height: 30px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--white);
+    background: var(--green);
+    padding: 6px 14px; border-radius: 20px;
+  }
+  .nav-tag {
+    font-size: 12px; font-weight: 600; color: var(--text-gray);
+  }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  .hero {
+    background: var(--navy);
+    padding: 100px 48px 72px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg-grain {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 52px 52px;
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1160px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 380px; gap: 64px; align-items: start;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--green-btn); margin-bottom: 20px;
+  }
+  .hero-eyebrow-line { width: 24px; height: 2px; background: var(--green-btn); }
+  .hero-title {
+    font-size: clamp(48px, 6.5vw, 80px); font-weight: 900;
+    color: var(--white); line-height: 1.0; letter-spacing: -2px; margin-bottom: 10px;
+  }
+  .hero-title .accent { color: var(--green-btn); }
+  .hero-subtitle {
+    font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.55);
+    margin-bottom: 24px; letter-spacing: 0;
+  }
+  .hero-desc {
+    font-size: 15px; line-height: 1.75; font-weight: 400;
+    color: rgba(255,255,255,0.80); max-width: 540px; margin-bottom: 48px;
+  }
+  .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num {
+    font-size: 42px; font-weight: 900; color: var(--white);
+    line-height: 1; letter-spacing: -1.5px;
+  }
+  .stat-num em { color: var(--green-btn); font-style: normal; }
+  .stat-label { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.60); }
+
+  /* Card lateral */
+  .hero-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
+  .hc-header {
+    background: var(--green);
+    padding: 16px 24px;
+  }
+  .hc-header-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: white;
+  }
+  .hc-body { padding: 8px 0; }
+  .hc-step {
+    display: flex; gap: 16px; padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .hc-step:last-child { border-bottom: none; }
+  .hc-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--green-light);
+    border: 2px solid var(--green-btn);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--green);
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .hc-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .hc-desc { font-size: 12px; font-weight: 400; color: var(--text-gray); line-height: 1.55; }
+  .hc-desc a { color: var(--green); font-weight: 600; }
+
+  /* ── TICKER ───────────────────────────────────────────── */
+  .ticker-strip { background: var(--green); padding: 14px 0; overflow: hidden; }
+  .ticker-inner { display: flex; white-space: nowrap; animation: ticker 26s linear infinite; }
+  .ticker-item {
+    display: inline-flex; align-items: center; gap: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    color: white; padding: 0 28px; flex-shrink: 0;
+  }
+  .ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── EVAL STRIP ───────────────────────────────────────── */
+  .eval-strip { background: var(--white); padding: 72px 48px; border-bottom: 1px solid var(--border); }
+  .eval-inner { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .eval-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--green); display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  }
+  .eval-eyebrow::before { content:''; width:20px; height:2px; background:var(--green); }
+  .eval-title { font-size: clamp(24px, 3vw, 36px); font-weight: 900; color: var(--text); letter-spacing: -1px; line-height: 1.15; margin-bottom: 12px; }
+  .eval-title em { color: var(--green); font-style: normal; }
+  .eval-desc { font-size: 14px; font-weight: 400; color: var(--text-gray); line-height: 1.75; }
+  .eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .eval-card {
+    background: var(--green-pale); border: 1px solid var(--border-green);
+    border-radius: var(--radius); padding: 18px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .eval-card:hover { border-color: var(--green-btn); box-shadow: 0 4px 16px rgba(103,162,45,0.12); }
+  .eval-icon { font-size: 20px; margin-bottom: 8px; }
+  .eval-card-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .eval-card-desc { font-size: 11.5px; font-weight: 400; color: var(--text-gray); line-height: 1.55; }
+
+  /* ── CHALLENGES ───────────────────────────────────────── */
+  .challenges-section { max-width: 1160px; margin: 0 auto; padding: 72px 48px; }
+  .sec-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--green); display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .sec-eyebrow::before { content:''; width:20px; height:2px; background:var(--green); }
+  .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; gap: 32px; flex-wrap: wrap; }
+  .sec-title { font-size: clamp(24px, 3vw, 36px); font-weight: 900; color: var(--text); letter-spacing: -1px; line-height: 1.15; }
+  .sec-title em { color: var(--green); font-style: normal; }
+  .sec-desc { font-size: 14px; font-weight: 400; color: var(--text-gray); line-height: 1.75; max-width: 300px; }
+  .challenges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+  .card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); transform: translateY(-3px); border-color: var(--border-green); }
+
+  .card-head {
+    background: var(--green);
+    padding: 18px 22px 14px;
+  }
+  .card-num { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 6px; }
+  .card-title { font-size: 16px; font-weight: 800; color: white; line-height: 1.3; }
+
+  .card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  .field-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 5px; }
+  .card-context { font-size: 13px; font-weight: 400; color: var(--text-mid); line-height: 1.70; }
+  .card-problem {
+    background: #fffbf0; border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0; padding: 12px 14px;
+    font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.65;
+  }
+  .card-tables { display: flex; flex-direction: column; gap: 6px; }
+  .data-pill { background: var(--green-pale); border: 1px solid var(--border-green); border-radius: 6px; padding: 8px 12px; }
+  .data-pill-name { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+  .data-pill-cols { font-size: 10.5px; font-weight: 400; color: var(--text-gray); line-height: 1.5; }
+
+  .card-foot { padding: 0 22px 20px; }
+  .dl-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--green-btn);
+    color: white; text-decoration: none;
+    padding: 13px 16px; border-radius: var(--radius);
+    transition: background 0.2s, transform 0.15s;
+    border: none; width: 100%; cursor: pointer;
+    font-family: var(--font);
+  }
+  .dl-btn:hover { background: var(--green-hover); transform: translateY(-1px); }
+  .dl-btn:active { transform: translateY(0); }
+  .dl-left { display: flex; flex-direction: column; gap: 2px; text-align: left; }
+  .dl-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; }
+  .dl-file { font-size: 10px; color: rgba(255,255,255,0.75); font-weight: 400; }
+  .dl-icon {
+    width: 28px; height: 28px; background: rgba(255,255,255,0.22);
+    border-radius: 5px; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────── */
+  footer { background: var(--navy); padding: 48px 48px 32px; }
+  .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .footer-logo svg { height: 26px; width: auto; }
+  .footer-text { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.45); text-align: right; line-height: 1.7; }
+
+  /* ── ANIMATIONS ───────────────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ───────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-card { max-width: 460px; }
+    .eval-inner { grid-template-columns: 1fr; gap: 48px; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 88px 20px 56px; }
+    .challenges-section, .eval-strip { padding: 52px 20px; }
+    .challenges-grid { grid-template-columns: 1fr; }
+    .eval-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 28px; }
+    .sec-header { flex-direction: column; align-items: flex-start; }
+    .sec-desc { max-width: 100%; }
+    footer { padding: 36px 20px 24px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-text { text-align: left; }
+  }
+
+  /* ── GATE OVERLAY ─────────────────────────────────────── */
+  .gate-overlay {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(26, 46, 74, 0.92);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .gate-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    width: 100%; max-width: 440px;
+    overflow: hidden;
+  }
+  .gate-header {
+    background: var(--green);
+    padding: 24px 32px 20px;
+  }
+  .gate-header-logo { margin-bottom: 16px; }
+  .gate-header-logo svg { height: 26px; width: auto; }
+  .gate-title {
+    font-size: 20px; font-weight: 900; color: white;
+    letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 4px;
+  }
+  .gate-subtitle { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.75); }
+  .gate-body { padding: 28px 32px 32px; }
+  .gate-field { margin-bottom: 18px; }
+  .gate-label {
+    display: block; font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-gray); margin-bottom: 7px;
+  }
+  .gate-input {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius); font-family: var(--font);
+    font-size: 14px; font-weight: 400; color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .gate-input:focus {
+    border-color: var(--green-btn);
+    box-shadow: 0 0 0 3px rgba(140,198,63,0.15);
+  }
+  .gate-input.error { border-color: #e53e3e; }
+  .gate-error {
+    font-size: 11px; color: #e53e3e; font-weight: 500;
+    margin-top: 5px; display: none;
+  }
+  .gate-btn {
+    width: 100%; padding: 13px;
+    background: var(--green-btn); color: white;
+    border: none; border-radius: var(--radius);
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    cursor: pointer; margin-top: 4px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .gate-btn:hover { background: var(--green-hover); transform: translateY(-1px); }
+  .gate-btn:active { transform: translateY(0); }
+  .gate-note {
+    font-size: 11px; color: var(--text-light); text-align: center;
+    margin-top: 14px; line-height: 1.5;
+  }
+
+
+  /* ── COOKIE NOTICE ────────────────────────────────────── */
+  .cookie-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+    background: rgba(26, 46, 74, 0.96);
+    backdrop-filter: blur(4px);
+    padding: 12px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+    border-top: 1px solid rgba(103,162,45,0.25);
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+  }
+  .cookie-bar.visible { transform: translateY(0); }
+  .cookie-text {
+    font-size: 11.5px; font-weight: 400; color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+  .cookie-text a {
+    color: rgba(255,255,255,0.75); text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .cookie-dismiss {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--green-btn);
+    background: none; border: 1px solid rgba(140,198,63,0.35);
+    border-radius: 4px; padding: 5px 14px;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    font-family: var(--font);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .cookie-dismiss:hover {
+    background: rgba(140,198,63,0.1);
+    border-color: var(--green-btn);
+  }
+
+</style>
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vwthml9s19");
+</script>
+
+<!-- Click event tracking -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // Download buttons
+    document.querySelectorAll('.dl-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var file = btn.querySelector('.dl-file') ? btn.querySelector('.dl-file').textContent.trim() : '';
+        var challenge = btn.closest('.card') ? btn.closest('.card').querySelector('.card-num').textContent.trim() : '';
+        if (window.clarity) clarity('event', 'download_click', { desafio: challenge, arquivo: file });
+      });
+    });
+
+    // Email link in step 5
+    document.querySelectorAll('a[href^="mailto"]').forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.clarity) clarity('event', 'email_click');
+      });
+    });
+
+    // Card hover / view tracking via IntersectionObserver
+    var cardObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var num = entry.target.querySelector('.card-num');
+          if (num && window.clarity) clarity('event', 'card_viewed', { desafio: num.textContent.trim() });
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.card').forEach(function(c) { cardObserver.observe(c); });
+
+    // Eval section view
+    var evalObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          if (window.clarity) clarity('event', 'avaliacao_viewed');
+          evalObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    var evalSection = document.querySelector('.eval-strip');
+    if (evalSection) evalObserver.observe(evalSection);
+
+    // Scroll depth milestones
+    var milestones = { 25: false, 50: false, 75: false, 100: false };
+    window.addEventListener('scroll', function() {
+      var scrolled = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      Object.keys(milestones).forEach(function(mark) {
+        if (!milestones[mark] && scrolled >= mark) {
+          milestones[mark] = true;
+          if (window.clarity) clarity('event', 'scroll_depth', { percent: mark + '%' });
+        }
+      });
+    }, { passive: true });
+
+  });
+</script>
+</head>
+<body>
+
+<!-- GATE: identify candidate before entering -->
+<div class="gate-overlay" id="gate">
+  <div class="gate-card">
+    <div class="gate-header">
+      <div class="gate-header-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="36" fill="none" viewBox="0 0 144 44"><g clip-path="url(#gd-gate-a)" fill="none"><path fill="#fff" d="M7.797 24.503c-1.92 0-3.22-1.082-3.22-4.362s1.496-4.363 3.187-4.363c1.822 0 3.059 1.083 3.059 4.297 0 3.378-1.366 4.428-3.025 4.428zm46.897-8.525c-3.29 0-3.998 3.187-3.998 6.731s.741 7.024 4.095 7.024c3.355 0 3.999-3.186 3.999-6.796 0-3.609-.71-6.959-4.096-6.959m.162-1.56c4.934 0 7.288 3.447 7.288 8.389s-2.773 8.486-7.48 8.486-7.32-3.415-7.32-8.357 2.904-8.52 7.514-8.52zm-14.18 12.063v-2.698H38.87c-2.934 0-3.901 1.235-3.901 3.154 0 1.625.58 2.568 2.29 2.568 1.613 0 3.418-1.041 3.418-3.025zm-3.387-15.868c-.709-.292-1.29-.52-1.903-.52-.547 0-1.063.26-1.547 1.43l-.935-.291c.581-1.983 1.515-3.154 3.387-3.154 1.192 0 1.838.357 2.772.747.645.261 1.257.488 1.903.488.74 0 1.129-.292 1.58-1.398l.903.26c-.644 2.375-1.902 3.187-3.29 3.187-1.127 0-2.03-.39-2.868-.747zm3.387 11.804v-2.211c0-2.83-.678-4.422-3.225-4.422-.968 0-2.709.13-2.709 1.366 0 .13.033.26.065.422h1.065c.097.392.194.813.194 1.172 0 1.105-.774 1.723-1.838 1.723-1.162 0-1.87-.715-1.87-2.015 0-2.374 2.386-4.032 5.578-4.032 4.031 0 5.804 1.592 5.804 6.145v7.414c0 1.398.227 1.82 1 1.82.356 0 .678-.066 1.065-.195l.291 1.107c-.547.293-1.386.553-2.354.553-1.676 0-2.644-.619-2.903-2.31-1 1.497-2.74 2.342-4.74 2.342-2.482 0-4.514-1.106-4.514-4.162 0-3.544 2.87-4.716 6.869-4.716h2.225zM26.04 29.635v1.3h-8.641v-1.3l2.095-.228v-13.07L17.4 16.11V14.84l4.642-.194.226 2.829h.127c.936-1.69 2.26-3.056 4.644-3.056 1.774 0 3.29 1.073 3.29 3.023 0 1.758-.903 2.537-2.257 2.537s-2.096-.814-2.064-2.212l1.033-.422c.032-.131.065-.262.065-.39 0-.586-.486-.78-1.065-.78-1.709 0-3.482 2.243-3.482 4.13v9.104l3.482.228zM8.35 31.523c3.026 0 4.652.196 4.652 1.968 0 2.1-1.886 2.755-5.075 2.755-4.098 0-4.845-.952-4.845-2.493 0-.918.357-1.607.813-2.23h4.457zm8.117-19.375c-.014-1.653-1.184-2.488-1.597-2.718-.365-.203-1.44-.58-2.61.544-.984.943-.584 2.125-.127 2.73l1.1-.233s.24.334.084.746c-.209.555-1.475 1.643-1.928 1.98q-.04.028-.08.058c-.813-.558-2.017-.918-3.48-.918-4.294 0-6.407 2.918-6.407 6.166 0 2.262 1.073 4.198 3.122 4.92C2.95 26.8 1.65 27.72 1.65 29.195c0 .753.357 1.441 1.138 1.803-1.106.656-2.244 1.542-2.244 3.378 0 2.132 1.659 3.543 6.603 3.543 6.179 0 8.229-1.903 8.229-5.183 0-3.706-2.797-4.263-6.538-4.263H5.78c-.911 0-1.333-.065-1.333-.688 0-.46.488-.985 1.529-1.935.65.13 1.041.195 1.854.195 3.383 0 6.082-2.163 6.082-5.903 0-1.902-.748-3.083-1.658-4 .713-.193 1.364-.282 2.49-.892.91-.49 1.736-1.548 1.723-3.102"></path><path fill="#8CC63F" d="M12.61 14.123s-1.803-2.63-1.098-4.531c.799-2.15 2.944-3.522 2.944-3.522s1.17 2.927.727 4.601c-.531 2-2.572 3.452-2.572 3.452M77.5 20.286v6.144c-.795 1.184-2.405 2.009-3.924 2.009-2.556 0-4.273-2.042-4.273-5.08s1.719-5.115 4.273-5.115c1.482 0 3.13.859 3.922 2.042zm62.208 3.04c0 2.463-1.378 5.113-4.4 5.113s-4.367-2.65-4.367-5.113c0-3.492 2.263-5.082 4.367-5.082 3.024 0 4.4 2.635 4.4 5.082m1.494-5.798c-1.472-1.592-3.51-2.433-5.894-2.433-4.638 0-8.004 3.462-8.004 8.233 0 4.77 3.366 8.264 8.004 8.264 2.386 0 4.424-.844 5.894-2.438 1.381-1.498 2.143-3.568 2.143-5.826 0-2.259-.76-4.305-2.143-5.799m-15.581 10.39c-.23.26-.821.522-1.467.522-.86 0-1.416-.674-1.416-1.76V18.53h3.175v-2.935h-3.175v-4.267h-3.439v4.267h-2.646v2.935h2.646v8.989c0 2.628 1.42 4.075 4.026 4.075 1.427 0 2.503-.344 3.21-1.02l.031-.033-.856-2.72-.089.1zm-12.657-5.922h-8.534c.202-1.867 1.587-3.974 4.265-3.974 1.97 0 4.134 1.306 4.269 3.974m-4.269-6.901c-4.509 0-7.907 3.54-7.907 8.233s3.357 8.264 8.163 8.264c2.554 0 4.798-.81 6.319-2.278l.047-.045-1.624-2.353-.065.065c-.999 1.009-2.738 1.752-4.326 1.752-2.164 0-4.486-1.402-4.838-4.07h11.925V23.65c0-2.418-.744-4.595-2.09-6.127-1.394-1.588-3.335-2.427-5.604-2.427M95.49 17.63v-2.036h-3.705v15.74h3.705V20.545c.529-1.055 2.48-2.01 3.863-2.01.407 0 .772.031 1.056.095l.107.021v-3.591h-.132c-1.818 0-3.572.999-4.894 2.57M86.46 9.39c-1.167 0-2.154.995-2.154 2.172s.987 2.171 2.155 2.171 2.153-.974 2.153-2.17a2.166 2.166 0 0 0-2.153-2.173m-1.817 21.944h3.44V15.592h-3.44v15.741000000000001m-7.142-13.835c-1.324-1.53-3.006-2.402-4.882-2.402-4.156 0-6.95 3.322-6.95 8.264s2.794 8.233 6.951 8.233c1.88 0 3.559-.862 4.882-2.373v2.113h3.44V9.455h-3.44v8.04z"></path></g><defs><clipPath id="gd-gate-a"><path fill="#fff" d="M.5 0h143v44H.5z"></path></clipPath></defs></svg>
+      </div>
+      <div class="gate-title">Desafio Técnico<br>Analista de Inteligência de Negócios</div>
+      <div class="gate-subtitle">Clicou, Fechou! · Processo Seletivo 2026</div>
+    </div>
+    <div class="gate-body">
+      <div class="gate-field">
+        <label class="gate-label" for="gate-name">Seu nome completo</label>
+        <input class="gate-input" id="gate-name" type="text" placeholder="Ex: Maria Silva" autocomplete="name">
+        <div class="gate-error" id="gate-name-error">Por favor, informe seu nome completo.</div>
+      </div>
+      <div class="gate-field">
+        <label class="gate-label" for="gate-email">Seu e-mail</label>
+        <input class="gate-input" id="gate-email" type="email" placeholder="Ex: maria.silva@email.com" autocomplete="email">
+        <div class="gate-error" id="gate-email-error">Por favor, informe um e-mail válido.</div>
+      </div>
+      <button class="gate-btn" id="gate-submit">Acessar os desafios →</button>
+      <p class="gate-note">Seus dados são usados apenas para identificação neste processo seletivo.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="144" height="44" fill="none" viewBox="0 0 144 44"><g clip-path="url(#gd-nav-a)" fill="none"><path fill="#605444" d="M7.797 24.503c-1.92 0-3.22-1.082-3.22-4.362s1.496-4.363 3.187-4.363c1.822 0 3.059 1.083 3.059 4.297 0 3.378-1.366 4.428-3.025 4.428zm46.897-8.525c-3.29 0-3.998 3.187-3.998 6.731s.741 7.024 4.095 7.024c3.355 0 3.999-3.186 3.999-6.796 0-3.609-.71-6.959-4.096-6.959m.162-1.56c4.934 0 7.288 3.447 7.288 8.389s-2.773 8.486-7.48 8.486-7.32-3.415-7.32-8.357 2.904-8.52 7.514-8.52zm-14.18 12.063v-2.698H38.87c-2.934 0-3.901 1.235-3.901 3.154 0 1.625.58 2.568 2.29 2.568 1.613 0 3.418-1.041 3.418-3.025zm-3.387-15.868c-.709-.292-1.29-.52-1.903-.52-.547 0-1.063.26-1.547 1.43l-.935-.291c.581-1.983 1.515-3.154 3.387-3.154 1.192 0 1.838.357 2.772.747.645.261 1.257.488 1.903.488.74 0 1.129-.292 1.58-1.398l.903.26c-.644 2.375-1.902 3.187-3.29 3.187-1.127 0-2.03-.39-2.868-.747zm3.387 11.804v-2.211c0-2.83-.678-4.422-3.225-4.422-.968 0-2.709.13-2.709 1.366 0 .13.033.26.065.422h1.065c.097.392.194.813.194 1.172 0 1.105-.774 1.723-1.838 1.723-1.162 0-1.87-.715-1.87-2.015 0-2.374 2.386-4.032 5.578-4.032 4.031 0 5.804 1.592 5.804 6.145v7.414c0 1.398.227 1.82 1 1.82.356 0 .678-.066 1.065-.195l.291 1.107c-.547.293-1.386.553-2.354.553-1.676 0-2.644-.619-2.903-2.31-1 1.497-2.74 2.342-4.74 2.342-2.482 0-4.514-1.106-4.514-4.162 0-3.544 2.87-4.716 6.869-4.716h2.225zM26.04 29.635v1.3h-8.641v-1.3l2.095-.228v-13.07L17.4 16.11V14.84l4.642-.194.226 2.829h.127c.936-1.69 2.26-3.056 4.644-3.056 1.774 0 3.29 1.073 3.29 3.023 0 1.758-.903 2.537-2.257 2.537s-2.096-.814-2.064-2.212l1.033-.422c.032-.131.065-.262.065-.39 0-.586-.486-.78-1.065-.78-1.709 0-3.482 2.243-3.482 4.13v9.104l3.482.228zM8.35 31.523c3.026 0 4.652.196 4.652 1.968 0 2.1-1.886 2.755-5.075 2.755-4.098 0-4.845-.952-4.845-2.493 0-.918.357-1.607.813-2.23h4.457zm8.117-19.375c-.014-1.653-1.184-2.488-1.597-2.718-.365-.203-1.44-.58-2.61.544-.984.943-.584 2.125-.127 2.73l1.1-.233s.24.334.084.746c-.209.555-1.475 1.643-1.928 1.98q-.04.028-.08.058c-.813-.558-2.017-.918-3.48-.918-4.294 0-6.407 2.918-6.407 6.166 0 2.262 1.073 4.198 3.122 4.92C2.95 26.8 1.65 27.72 1.65 29.195c0 .753.357 1.441 1.138 1.803-1.106.656-2.244 1.542-2.244 3.378 0 2.132 1.659 3.543 6.603 3.543 6.179 0 8.229-1.903 8.229-5.183 0-3.706-2.797-4.263-6.538-4.263H5.78c-.911 0-1.333-.065-1.333-.688 0-.46.488-.985 1.529-1.935.65.13 1.041.195 1.854.195 3.383 0 6.082-2.163 6.082-5.903 0-1.902-.748-3.083-1.658-4 .713-.193 1.364-.282 2.49-.892.91-.49 1.736-1.548 1.723-3.102"></path><path fill="#8CC63F" d="M12.61 14.123s-1.803-2.63-1.098-4.531c.799-2.15 2.944-3.522 2.944-3.522s1.17 2.927.727 4.601c-.531 2-2.572 3.452-2.572 3.452M77.5 20.286v6.144c-.795 1.184-2.405 2.009-3.924 2.009-2.556 0-4.273-2.042-4.273-5.08s1.719-5.115 4.273-5.115c1.482 0 3.13.859 3.922 2.042zm62.208 3.04c0 2.463-1.378 5.113-4.4 5.113s-4.367-2.65-4.367-5.113c0-3.492 2.263-5.082 4.367-5.082 3.024 0 4.4 2.635 4.4 5.082m1.494-5.798c-1.472-1.592-3.51-2.433-5.894-2.433-4.638 0-8.004 3.462-8.004 8.233 0 4.77 3.366 8.264 8.004 8.264 2.386 0 4.424-.844 5.894-2.438 1.381-1.498 2.143-3.568 2.143-5.826 0-2.259-.76-4.305-2.143-5.799m-15.581 10.39c-.23.26-.821.522-1.467.522-.86 0-1.416-.674-1.416-1.76V18.53h3.175v-2.935h-3.175v-4.267h-3.439v4.267h-2.646v2.935h2.646v8.989c0 2.628 1.42 4.075 4.026 4.075 1.427 0 2.503-.344 3.21-1.02l.031-.033-.856-2.72-.089.1zm-12.657-5.922h-8.534c.202-1.867 1.587-3.974 4.265-3.974 1.97 0 4.134 1.306 4.269 3.974m-4.269-6.901c-4.509 0-7.907 3.54-7.907 8.233s3.357 8.264 8.163 8.264c2.554 0 4.798-.81 6.319-2.278l.047-.045-1.624-2.353-.065.065c-.999 1.009-2.738 1.752-4.326 1.752-2.164 0-4.486-1.402-4.838-4.07h11.925V23.65c0-2.418-.744-4.595-2.09-6.127-1.394-1.588-3.335-2.427-5.604-2.427M95.49 17.63v-2.036h-3.705v15.74h3.705V20.545c.529-1.055 2.48-2.01 3.863-2.01.407 0 .772.031 1.056.095l.107.021v-3.591h-.132c-1.818 0-3.572.999-4.894 2.57M86.46 9.39c-1.167 0-2.154.995-2.154 2.172s.987 2.171 2.155 2.171 2.153-.974 2.153-2.17a2.166 2.166 0 0 0-2.153-2.173m-1.817 21.944h3.44V15.592h-3.44v15.741000000000001m-7.142-13.835c-1.324-1.53-3.006-2.402-4.882-2.402-4.156 0-6.95 3.322-6.95 8.264s2.794 8.233 6.951 8.233c1.88 0 3.559-.862 4.882-2.373v2.113h3.44V9.455h-3.44v8.04z"></path></g><defs><clipPath id="gd-nav-a"><path fill="#fff" d="M.5 0h143v44H.5z"></path></clipPath></defs></svg>
+  </a>
+  <div class="nav-right">
+    <span class="nav-tag">Processo Seletivo 2026</span>
+    <span class="nav-badge">Analista de Inteligência de Negócios</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grain"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow"><div class="hero-eyebrow-line"></div>Analista de Inteligência de Negócios · Desafio Técnico</div>
+      <h1 class="hero-title">CLICOU,<br><span class="accent">FECHOU!</span></h1>
+      <p class="hero-subtitle">Clicou, Fechou! · Grão Direto</p>
+      <p class="hero-desc">Cinco desafios reais baseados em dados fictícios do agronegócio. Sem roteiro, sem resposta certa. Queremos ver como você pensa, o que você escolhe olhar — e por quê.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">5<em>.</em></div><div class="stat-label">Desafios obrigatórios</div></div>
+        <div class="stat"><div class="stat-num">3<em>.</em></div><div class="stat-label">Apresentações presenciais</div></div>
+        <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Ferramentas permitidas</div></div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hc-header"><div class="hc-header-title">Como funciona</div></div>
+      <div class="hc-body">
+        <div class="hc-step"><div class="hc-num">1</div><div><div class="hc-title">Faça os 5 desafios</div><div class="hc-desc">Todos são obrigatórios. Use a ferramenta que preferir.</div></div></div>
+        <div class="hc-step"><div class="hc-num">2</div><div><div class="hc-title">Baixe os dados</div><div class="hc-desc">Cada desafio tem um .xlsx com dados reais do agro.</div></div></div>
+        <div class="hc-step"><div class="hc-num">3</div><div><div class="hc-title">Defina sua abordagem</div><div class="hc-desc">Sem roteiro. Você decide o que analisar e como comunicar.</div></div></div>
+        <div class="hc-step"><div class="hc-num">4</div><div><div class="hc-title">Escolha 3 para apresentar</div><div class="hc-desc">Na entrevista presencial, você apresenta os 3 que escolher.</div></div></div>
+        <div class="hc-step"><div class="hc-num">5</div><div><div class="hc-title">Entregue antes da entrevista</div><div class="hc-desc">Envie para <a href="mailto:amanda.ferreira@graodireto.com.br,lucas.santos@graodireto.com.br,bruno.lacerda@graodireto.com.br?subject=Desafio%20T%C3%A9cnico%20-%20Data%20Analytics%20Clicou%2C%20Fechou!">amanda.ferreira@graodireto.com.br, lucas.santos@graodireto.com.br, bruno.lacerda@graodireto.com.br</a> com o assunto <strong>Desafio Técnico - Data Analytics Clicou, Fechou!</strong></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-strip">
+  <div class="ticker-inner">
+    <div class="ticker-item">Soja<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Milho<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Sorgo<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Barter<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Marketplace<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Basis / Prêmio<div class="ticker-dot"></div></div>
+    <div class="ticker-item">CBOT<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Churn<div class="ticker-dot"></div></div>
+    <div class="ticker-item">KPI<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Dashboard<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Market Intelligence<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Comercialização Digital<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Soja<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Milho<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Sorgo<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Barter<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Marketplace<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Basis / Prêmio<div class="ticker-dot"></div></div>
+    <div class="ticker-item">CBOT<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Churn<div class="ticker-dot"></div></div>
+    <div class="ticker-item">KPI<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Dashboard<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Market Intelligence<div class="ticker-dot"></div></div>
+    <div class="ticker-item">Comercialização Digital<div class="ticker-dot"></div></div>
+  </div>
+</div>
+
+<!-- O QUE AVALIAMOS -->
+<div class="eval-strip">
+  <div class="eval-inner">
+    <div class="reveal">
+      <div class="eval-eyebrow">Avaliação</div>
+      <h2 class="eval-title">O que <em>realmente</em><br>estamos avaliando</h2>
+      <p class="eval-desc">Não é sobre a ferramenta que você usa. É sobre como você pensa quando o problema não tem resposta óbvia.</p>
+    </div>
+    <div class="eval-grid reveal">
+      <div class="eval-card"><div class="eval-icon">🎯</div><div class="eval-card-title">Tradução de problema</div><div class="eval-card-desc">Transformar uma pergunta de negócio em análise estruturada</div></div>
+      <div class="eval-card"><div class="eval-icon">🔍</div><div class="eval-card-title">Escolhas analíticas</div><div class="eval-card-desc">O que você decidiu olhar — e por quê essas métricas</div></div>
+      <div class="eval-card"><div class="eval-icon">📢</div><div class="eval-card-title">Comunicação clara</div><div class="eval-card-desc">Insights que um público não-técnico entende e usa</div></div>
+      <div class="eval-card"><div class="eval-icon">💡</div><div class="eval-card-title">Curiosidade investigativa</div><div class="eval-card-desc">Ir além do óbvio, questionar, propor e concluir</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DESAFIOS -->
+<div class="challenges-section">
+  <div class="sec-header reveal">
+    <div>
+      <div class="sec-eyebrow">Desafios</div>
+      <h2 class="sec-title">Cinco problemas de <em>negócio reais</em></h2>
+    </div>
+    <p class="sec-desc">Dados fictícios, contexto real. Cada desafio é uma situação que o time de dados da Grão Direto enfrenta na prática.</p>
+  </div>
+
+  <div class="challenges-grid">
+
+    <div class="card reveal">
+      <div class="card-head"><div class="card-num">Desafio 01</div><div class="card-title">Quem está sumindo — e por quê?</div></div>
+      <div class="card-body">
+        <div><div class="field-label">Contexto</div><p class="card-context">A plataforma tem 312 empresas ativas em março/2025. O time comercial percebeu que algumas simplesmente pararam de aparecer — sem cancelamento, sem aviso. Você recebe dados de empresas, negociações e acessos dos últimos meses.</p></div>
+        <div><div class="field-label">Problema de negócio</div><p class="card-problem">O time comercial quer entender quais empresas estão em risco de abandono e o que está por trás desse comportamento. Como você abordaria esse problema?</p></div>
+        <div><div class="field-label">Dados disponíveis</div>
+          <div class="card-tables">
+            <div class="data-pill"><div class="data-pill-name">Empresas</div><div class="data-pill-cols">empresa_id · nome · segmento · uf · data_cadastro</div></div>
+            <div class="data-pill"><div class="data-pill-name">Negociacoes</div><div class="data-pill-cols">neg_id · empresa_id · data_neg · volume_ton · status · produto</div></div>
+            <div class="data-pill"><div class="data-pill-name">Acessos</div><div class="data-pill-cols">acesso_id · empresa_id · data_acesso · acao</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot"><a href="https://docs.google.com/spreadsheets/d/1vyePWl2iWgErnhDzLPum-qNz0sFzbLwY/export?format=xlsx" class="dl-btn"><div class="dl-left"><span class="dl-label">Baixar dados</span><span class="dl-file">churn_analise.xlsx · 3 abas · 312 empresas</span></div><div class="dl-icon">↓</div></a></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><div class="card-num">Desafio 02</div><div class="card-title">O painel que o Head abre toda segunda</div></div>
+      <div class="card-body">
+        <div><div class="field-label">Contexto</div><p class="card-context">O Head de Produto pediu um painel para acompanhar a saúde das negociações semana a semana. Ele quer abrir isso toda segunda-feira antes da reunião de time.</p></div>
+        <div><div class="field-label">Problema de negócio</div><p class="card-problem">Com base nos dados de ofertas de jan–abr/2025, construa o painel que você apresentaria a ele. Justifique suas escolhas: o que priorizou, o que deixou de fora e por quê.</p></div>
+        <div><div class="field-label">Dados disponíveis</div>
+          <div class="card-tables">
+            <div class="data-pill"><div class="data-pill-name">Ofertas Jan–Abr 2025</div><div class="data-pill-cols">oferta_id · empresa_vendedora · empresa_compradora · produto · volume_ton · preco_ton · data_oferta · status_oferta</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot"><a href="https://docs.google.com/spreadsheets/d/1OF7vVw45d6Y1XNd_oQwm3vj_EcJXCCVc/export?format=xlsx" class="dl-btn"><div class="dl-left"><span class="dl-label">Baixar dados</span><span class="dl-file">ofertas.xlsx · 400 ofertas · jan–abr 2025</span></div><div class="dl-icon">↓</div></a></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><div class="card-num">Desafio 03</div><div class="card-title">O que os que mais fecham têm em comum?</div></div>
+      <div class="card-body">
+        <div><div class="field-label">Contexto</div><p class="card-context">180 empresas fizeram ao menos uma oferta na plataforma em 2025. Algumas convertem muito bem; outras quase nunca fecham. O comercial quer saber o que diferencia esses grupos.</p></div>
+        <div><div class="field-label">Problema de negócio</div><p class="card-problem">Explore os dados e nos conte o que você encontrou. O que as empresas de alta conversão têm em comum? Suas descobertas mudariam a abordagem do comercial com esses clientes?</p></div>
+        <div><div class="field-label">Dados disponíveis</div>
+          <div class="card-tables">
+            <div class="data-pill"><div class="data-pill-name">Base Empresas 2025</div><div class="data-pill-cols">empresa_id · uf · porte · produto_principal · total_ofertas · total_fechamentos · media_vol_ton · acessos_mes · meses_ativo</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot"><a href="https://docs.google.com/spreadsheets/d/1O621_w-VWabFb0E1S_nx5xTrqQpZ7pIJ/export?format=xlsx" class="dl-btn"><div class="dl-left"><span class="dl-label">Baixar dados</span><span class="dl-file">base_empresas_2025.xlsx · 180 empresas</span></div><div class="dl-icon">↓</div></a></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><div class="card-num">Desafio 04</div><div class="card-title">Onde as negociações travam?</div></div>
+      <div class="card-body">
+        <div><div class="field-label">Contexto</div><p class="card-context">Cada negociação passa por etapas — da oferta criada até o fechamento ou cancelamento. Há um log com o histórico detalhado de cada movimentação. O produto quer entender onde as negociações estão travando.</p></div>
+        <div><div class="field-label">Problema de negócio</div><p class="card-problem">Mapeie o funil e identifique os pontos de maior perda. O que os dados sugerem como causa? Se pudesse recomendar uma ação concreta ao time de produto, qual seria?</p></div>
+        <div><div class="field-label">Dados disponíveis</div>
+          <div class="card-tables">
+            <div class="data-pill"><div class="data-pill-name">Negociacoes</div><div class="data-pill-cols">neg_id · empresa_id · produto · etapa_atual · etapa_maxima_atingida · data_criacao · volume_ton</div></div>
+            <div class="data-pill"><div class="data-pill-name">Etapas Log</div><div class="data-pill-cols">log_id · neg_id · etapa · data_entrada · data_saida</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot"><a href="https://docs.google.com/spreadsheets/d/1aXPYlfbMqQmsaudYbrSOCiuR723Ti9-x/export?format=xlsx" class="dl-btn"><div class="dl-left"><span class="dl-label">Baixar dados</span><span class="dl-file">negociacoes.xlsx · 350 negociações · log de etapas</span></div><div class="dl-icon">↓</div></a></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><div class="card-num">Desafio 05</div><div class="card-title">A queda foi nossa ou do mercado?</div></div>
+      <div class="card-body">
+        <div><div class="field-label">Contexto</div><p class="card-context">Em março/2025 o volume negociado caiu 23% vs fevereiro. O comercial entrou em alerta. Ao mesmo tempo, o dólar subiu 8%, o CBOT da soja recuou 6% e produtores de MT e GO relataram incerteza para precificar a safra nova.</p></div>
+        <div><div class="field-label">Problema de negócio</div><p class="card-problem">A queda foi um problema da plataforma ou reflexo do mercado? Como você separaria os dois efeitos? O que apresentaria ao comercial para orientar a decisão?</p></div>
+        <div><div class="field-label">Dados disponíveis</div>
+          <div class="card-tables">
+            <div class="data-pill"><div class="data-pill-name">Negociações</div><div class="data-pill-cols">neg_id · empresa_id · produto · uf · volume_ton · preco_ton · data · status</div></div>
+            <div class="data-pill"><div class="data-pill-name">Indicadores de Mercado</div><div class="data-pill-cols">data · dolar_ptax · cbot_soja_usc · cbot_milho_usc · basis_paranagua</div></div>
+            <div class="data-pill"><div class="data-pill-name">Histórico Mensal</div><div class="data-pill-cols">mes · volume_plataforma_ton · total_mercado_estimado_ton · dolar_medio · cbot_soja_medio</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot"><a href="https://docs.google.com/spreadsheets/d/17VqXkWewOCSjpLDPxWbBXAp69p1nawnX/export?format=xlsx" class="dl-btn"><div class="dl-left"><span class="dl-label">Baixar dados</span><span class="dl-file">volume_mercado_2025.xlsx · 3 abas · indicadores externos</span></div><div class="dl-icon">↓</div></a></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="120" height="36" fill="none" viewBox="0 0 144 44"><g clip-path="url(#gd-footer-a)" fill="none"><path fill="#FFFFFF" d="M7.797 24.503c-1.92 0-3.22-1.082-3.22-4.362s1.496-4.363 3.187-4.363c1.822 0 3.059 1.083 3.059 4.297 0 3.378-1.366 4.428-3.025 4.428zm46.897-8.525c-3.29 0-3.998 3.187-3.998 6.731s.741 7.024 4.095 7.024c3.355 0 3.999-3.186 3.999-6.796 0-3.609-.71-6.959-4.096-6.959m.162-1.56c4.934 0 7.288 3.447 7.288 8.389s-2.773 8.486-7.48 8.486-7.32-3.415-7.32-8.357 2.904-8.52 7.514-8.52zm-14.18 12.063v-2.698H38.87c-2.934 0-3.901 1.235-3.901 3.154 0 1.625.58 2.568 2.29 2.568 1.613 0 3.418-1.041 3.418-3.025zm-3.387-15.868c-.709-.292-1.29-.52-1.903-.52-.547 0-1.063.26-1.547 1.43l-.935-.291c.581-1.983 1.515-3.154 3.387-3.154 1.192 0 1.838.357 2.772.747.645.261 1.257.488 1.903.488.74 0 1.129-.292 1.58-1.398l.903.26c-.644 2.375-1.902 3.187-3.29 3.187-1.127 0-2.03-.39-2.868-.747zm3.387 11.804v-2.211c0-2.83-.678-4.422-3.225-4.422-.968 0-2.709.13-2.709 1.366 0 .13.033.26.065.422h1.065c.097.392.194.813.194 1.172 0 1.105-.774 1.723-1.838 1.723-1.162 0-1.87-.715-1.87-2.015 0-2.374 2.386-4.032 5.578-4.032 4.031 0 5.804 1.592 5.804 6.145v7.414c0 1.398.227 1.82 1 1.82.356 0 .678-.066 1.065-.195l.291 1.107c-.547.293-1.386.553-2.354.553-1.676 0-2.644-.619-2.903-2.31-1 1.497-2.74 2.342-4.74 2.342-2.482 0-4.514-1.106-4.514-4.162 0-3.544 2.87-4.716 6.869-4.716h2.225zM26.04 29.635v1.3h-8.641v-1.3l2.095-.228v-13.07L17.4 16.11V14.84l4.642-.194.226 2.829h.127c.936-1.69 2.26-3.056 4.644-3.056 1.774 0 3.29 1.073 3.29 3.023 0 1.758-.903 2.537-2.257 2.537s-2.096-.814-2.064-2.212l1.033-.422c.032-.131.065-.262.065-.39 0-.586-.486-.78-1.065-.78-1.709 0-3.482 2.243-3.482 4.13v9.104l3.482.228zM8.35 31.523c3.026 0 4.652.196 4.652 1.968 0 2.1-1.886 2.755-5.075 2.755-4.098 0-4.845-.952-4.845-2.493 0-.918.357-1.607.813-2.23h4.457zm8.117-19.375c-.014-1.653-1.184-2.488-1.597-2.718-.365-.203-1.44-.58-2.61.544-.984.943-.584 2.125-.127 2.73l1.1-.233s.24.334.084.746c-.209.555-1.475 1.643-1.928 1.98q-.04.028-.08.058c-.813-.558-2.017-.918-3.48-.918-4.294 0-6.407 2.918-6.407 6.166 0 2.262 1.073 4.198 3.122 4.92C2.95 26.8 1.65 27.72 1.65 29.195c0 .753.357 1.441 1.138 1.803-1.106.656-2.244 1.542-2.244 3.378 0 2.132 1.659 3.543 6.603 3.543 6.179 0 8.229-1.903 8.229-5.183 0-3.706-2.797-4.263-6.538-4.263H5.78c-.911 0-1.333-.065-1.333-.688 0-.46.488-.985 1.529-1.935.65.13 1.041.195 1.854.195 3.383 0 6.082-2.163 6.082-5.903 0-1.902-.748-3.083-1.658-4 .713-.193 1.364-.282 2.49-.892.91-.49 1.736-1.548 1.723-3.102"></path><path fill="#8CC63F" d="M12.61 14.123s-1.803-2.63-1.098-4.531c.799-2.15 2.944-3.522 2.944-3.522s1.17 2.927.727 4.601c-.531 2-2.572 3.452-2.572 3.452M77.5 20.286v6.144c-.795 1.184-2.405 2.009-3.924 2.009-2.556 0-4.273-2.042-4.273-5.08s1.719-5.115 4.273-5.115c1.482 0 3.13.859 3.922 2.042zm62.208 3.04c0 2.463-1.378 5.113-4.4 5.113s-4.367-2.65-4.367-5.113c0-3.492 2.263-5.082 4.367-5.082 3.024 0 4.4 2.635 4.4 5.082m1.494-5.798c-1.472-1.592-3.51-2.433-5.894-2.433-4.638 0-8.004 3.462-8.004 8.233 0 4.77 3.366 8.264 8.004 8.264 2.386 0 4.424-.844 5.894-2.438 1.381-1.498 2.143-3.568 2.143-5.826 0-2.259-.76-4.305-2.143-5.799m-15.581 10.39c-.23.26-.821.522-1.467.522-.86 0-1.416-.674-1.416-1.76V18.53h3.175v-2.935h-3.175v-4.267h-3.439v4.267h-2.646v2.935h2.646v8.989c0 2.628 1.42 4.075 4.026 4.075 1.427 0 2.503-.344 3.21-1.02l.031-.033-.856-2.72-.089.1zm-12.657-5.922h-8.534c.202-1.867 1.587-3.974 4.265-3.974 1.97 0 4.134 1.306 4.269 3.974m-4.269-6.901c-4.509 0-7.907 3.54-7.907 8.233s3.357 8.264 8.163 8.264c2.554 0 4.798-.81 6.319-2.278l.047-.045-1.624-2.353-.065.065c-.999 1.009-2.738 1.752-4.326 1.752-2.164 0-4.486-1.402-4.838-4.07h11.925V23.65c0-2.418-.744-4.595-2.09-6.127-1.394-1.588-3.335-2.427-5.604-2.427M95.49 17.63v-2.036h-3.705v15.74h3.705V20.545c.529-1.055 2.48-2.01 3.863-2.01.407 0 .772.031 1.056.095l.107.021v-3.591h-.132c-1.818 0-3.572.999-4.894 2.57M86.46 9.39c-1.167 0-2.154.995-2.154 2.172s.987 2.171 2.155 2.171 2.153-.974 2.153-2.17a2.166 2.166 0 0 0-2.153-2.173m-1.817 21.944h3.44V15.592h-3.44v15.741000000000001m-7.142-13.835c-1.324-1.53-3.006-2.402-4.882-2.402-4.156 0-6.95 3.322-6.95 8.264s2.794 8.233 6.951 8.233c1.88 0 3.559-.862 4.882-2.373v2.113h3.44V9.455h-3.44v8.04z"></path></g><defs><clipPath id="gd-footer-a"><path fill="#fff" d="M.5 0h143v44H.5z"></path></clipPath></defs></svg>
+    </div>
+    <div class="footer-text">
+      Clicou, Fechou! · Processo Seletivo 2026<br>
+      Todos os dados são fictícios e criados para fins de avaliação.
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = [...document.querySelectorAll('.reveal')].indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), (idx % 4) * 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+<script>
+  (function() {
+    var gate = document.getElementById('gate');
+    var nameInput = document.getElementById('gate-name');
+    var emailInput = document.getElementById('gate-email');
+    var nameError = document.getElementById('gate-name-error');
+    var emailError = document.getElementById('gate-email-error');
+    var submitBtn = document.getElementById('gate-submit');
+
+    function validateEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function setError(input, errorEl, show) {
+      input.classList.toggle('error', show);
+      errorEl.style.display = show ? 'block' : 'none';
+    }
+
+    submitBtn.addEventListener('click', function() {
+      var name = nameInput.value.trim();
+      var email = emailInput.value.trim();
+      var nameOk = name.length >= 3;
+      var emailOk = validateEmail(email);
+
+      setError(nameInput, nameError, !nameOk);
+      setError(emailInput, emailError, !emailOk);
+
+      if (!nameOk || !emailOk) return;
+
+      // Identify user in Clarity
+      if (window.clarity) {
+        clarity('identify', email, null, null, name);
+        clarity('set', 'candidato_nome', name);
+        clarity('set', 'candidato_email', email);
+        clarity('event', 'gate_submitted', { nome: name, email: email });
+      }
+
+      // Animate out and remove
+      gate.style.transition = 'opacity 0.35s ease';
+      gate.style.opacity = '0';
+      setTimeout(function() { gate.remove(); }, 350);
+    });
+
+    // Allow Enter key
+    [nameInput, emailInput].forEach(function(el) {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') submitBtn.click();
+      });
+    });
+
+    // Focus first field
+    setTimeout(function() { nameInput.focus(); }, 100);
+  })();
+</script>
+
+
+<!-- Cookie notice -->
+<div class="cookie-bar" id="cookie-bar">
+  <span class="cookie-text">
+    🍪 Este site utiliza cookies analíticos via Microsoft Clarity para registrar a navegação durante o processo seletivo.
+    <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener">Saiba mais</a>
+  </span>
+  <button class="cookie-dismiss" id="cookie-dismiss">Entendi</button>
+</div>
+
+<script>
+  (function() {
+    var bar = document.getElementById('cookie-bar');
+    var btn = document.getElementById('cookie-dismiss');
+    if (sessionStorage.getItem('cookie_ack')) return;
+    // Show after gate is dismissed (watch for gate removal)
+    var gateCheck = setInterval(function() {
+      if (!document.getElementById('gate')) {
+        clearInterval(gateCheck);
+        setTimeout(function() { bar.classList.add('visible'); }, 600);
+      }
+    }, 200);
+    btn.addEventListener('click', function() {
+      bar.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      bar.style.opacity = '0';
+      bar.style.transform = 'translateY(100%)';
+      sessionStorage.setItem('cookie_ack', '1');
+      setTimeout(function() { bar.remove(); }, 300);
+    });
+  })();
+</script>
+
+</body>
+</html>
